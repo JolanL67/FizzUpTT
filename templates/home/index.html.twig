@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Vélo d'appartement BODY B8896{% endblock %}
+
+{% block stylesheets %} {{ parent() }} {% endblock %}
+
+{% block body %}
+    <h1>Vélo d'appartement BODY B8896</h1>
+
+    <p>Vendu par :</p>
+    <h2>FitLan</h2>
+
+    <h2>Note générale des utilisateurs</h2>
+    <div>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star"></span>
+        <span class="fa fa-star"></span>
+    </div>
+
+    <a href="{{ asset('assets/image/velo01.jpg') }}"><img src="{{ asset('assets/image/velo01.png') }}" alt="appartment-bike-profile"></a>
+    <a href="{{ asset('assets/image/velo02.jpg') }}"><img src="{{ asset('assets/image/velo02.png') }}" alt="appartment-bike-adjustment"></a>
+    <a href="{{ asset('assets/image/velo03.jpg') }}"><img src="{{ asset('assets/image/velo03.png') }}" alt="appartment-bike-handlebar"></a>
+    <a href="{{ asset('assets/image/velo04.jpg') }}"><img src="{{ asset('assets/image/velo04.png') }}" alt="appartment-bike-face"></a>
+
+    <div class="usersReview">
+        <h2>Liste des avis</h2>
+
+        <label for="review-sort">Trier par :</label>
+        <select name="review" id="review-sort">
+            <option value="">-- Veuillez choisir une option --</option>
+            <option value="date">Date - plus récent</option>
+            <option value="rating">Note - plus haute au plus bas</option>
+        </select>
+
+    {{ dump(reviews) }}
+    {% for review in reviews %}
+        <div class="blockReviews">
+            {% if review.image is null %}
+                <img class="avatars" src="{{ asset('assets/image/avatar.png') }}" alt="user-avatar">
+            {% else %}
+                <img class="avatars" src="{{ asset('assets/avatar/' ~ review.image) }}" alt="user-avatar">
+            {% endif %}
+            <p>{{review.username}}</p>
+
+            <p>
+                Note : <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star"></span>
+                <span class="fa fa-star"></span>
+            </p>
+
+            <p>Posté le : {{review.createdAt|date('d-m-Y')}} à {{review.createdAt|date('H:i')}}</p>
+
+            <p class="commentary">{{ review.comment }}</p>
+            <button onclick="myFunction()" id="myBtn">Read more</button>
+        </div>
+    {% endfor %}
+
+        <a href="{{ path('review') }}"><button>Laissez votre avis sur le produit !</button></a>
+        
+    </div>
+{% endblock %}
