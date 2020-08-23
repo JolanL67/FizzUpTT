@@ -11,10 +11,17 @@
         {% endblock %}
     </head>
     <body>
-            <div class="container">
+        <div class="container">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    {{ message }}<span class="close">x</span>
+                </div>
+            {% endfor %}
+
         {% block body %}
+         
         {% endblock %}
-            </div>
+        </div>
 
         {% block javascripts %}
             <script src="{{ asset('assets/js/app.js') }}"></script>

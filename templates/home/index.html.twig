@@ -5,17 +5,12 @@
 	- Vélo d'appartement BODY B8896
 {% endblock %}
 
-{# {% block stylesheets %}
-	{{ parent() }}
-{% endblock %} #}
-
 {% block body %}
 	<h1>Vélo d'appartement BODY B8896</h1>
 
-    <a href="{{ asset('assets/image/velo01.png') }}"><img class="bikeImage" src="{{ asset('assets/image/velo01.png') }}" alt="appartment-bike-profile"></a>
-	<a href="{{ asset('assets/image/velo02.png') }}"><img class="bikeImage" src="{{ asset('assets/image/velo02.png') }}" alt="appartment-bike-adjustment"></a>
-	<a href="{{ asset('assets/image/velo03.png') }}"><img class="bikeImage" src="{{ asset('assets/image/velo03.png') }}" alt="appartment-bike-handlebar"></a>
-	<a href="{{ asset('assets/image/velo04.png') }}"><img class="bikeImage" src="{{ asset('assets/image/velo04.png') }}" alt="appartment-bike-face"></a>
+	{% for i in 1..4 %}
+    	<a href="{{ asset('assets/image/velo0' ~ i ~ '.png') }}"><img class="bikeImage" src="{{ asset('assets/image/velo0' ~ i ~ '.png') }}" alt="velo-appartement"></a>
+	{% endfor %}
 
 	<h2>Note générale des utilisateurs</h2>
 
@@ -32,7 +27,7 @@
 				{% set starAverage = (average >= i ? "fa fa-star checked" : "fa fa-star")  %}
 				<span class="{{ starAverage }}"></span>
 			{% endfor %}
-			<p>{{ reviews|length }} avis utilisateur(s) - Note : {{ average }}</p>
+			<p>{{ reviews|length }} avis utilisateur(s) - Note : {{ average|slice(0,4) }}</p>
 		{% endif %}
 	</div>
 
@@ -55,7 +50,6 @@
 		</a>
 
 		{{ dump(reviews) }}
-
 		{% for review in reviews %}
 			<div class="blockReviews">
 				{% if review.image is null %}

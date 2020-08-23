@@ -1,15 +1,7 @@
-function readMoreOrLess() {
-  let dots = document.getElementById("dots");
-  let moreText = document.getElementById("more");
-  let btnText = document.getElementById("myBtn");
+let closeBtn = document.getElementsByClassName("close");
+let i;
 
-  if (dots.style.display === "none") {
-    dots.style.display = "inline";
-    btnText.innerHTML = "Voir plus";
-    moreText.style.display = "none";
-  } else {
-    dots.style.display = "none";
-    btnText.innerHTML = "Voir moins";
-    moreText.style.display = "inline";
-  }
-}
+for (i = 0; i < closeBtn.length; i++) {
+  closeBtn[i].addEventListener("click", function() {
+  this.parentElement.style.display = 'none';
+})}

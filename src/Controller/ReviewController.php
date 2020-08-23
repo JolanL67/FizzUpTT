@@ -21,7 +21,6 @@ class ReviewController extends AbstractController
     public function home(ReviewRepository $reviewRepository)
     {
         $reviews = $reviewRepository->findAll();
-        // dd($reviews);
 
         return $this->render('home/index.html.twig', [
             'reviews' => $reviews
@@ -61,6 +60,8 @@ class ReviewController extends AbstractController
 
                 $review->setImage($newFilename);
             }
+
+            $this->addFlash('success', 'Votre avis a bien été pris en compte.');
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($review);
