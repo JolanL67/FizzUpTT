@@ -12,35 +12,50 @@
 {% block body %}
 	<h1>Vélo d'appartement BODY B8896</h1>
 
-    <a href="{{ asset('assets/image/velo01.png') }}"><img src="{{ asset('assets/image/velo01.png') }}" alt="appartment-bike-profile"></a>
-	<a href="{{ asset('assets/image/velo02.png') }}"><img src="{{ asset('assets/image/velo02.png') }}" alt="appartment-bike-adjustment"></a>
-	<a href="{{ asset('assets/image/velo03.png') }}"><img src="{{ asset('assets/image/velo03.png') }}" alt="appartment-bike-handlebar"></a>
-	<a href="{{ asset('assets/image/velo04.png') }}"><img src="{{ asset('assets/image/velo04.png') }}" alt="appartment-bike-face"></a>
+    <a href="{{ asset('assets/image/velo01.png') }}"><img class="bikeImage" src="{{ asset('assets/image/velo01.png') }}" alt="appartment-bike-profile"></a>
+	<a href="{{ asset('assets/image/velo02.png') }}"><img class="bikeImage" src="{{ asset('assets/image/velo02.png') }}" alt="appartment-bike-adjustment"></a>
+	<a href="{{ asset('assets/image/velo03.png') }}"><img class="bikeImage" src="{{ asset('assets/image/velo03.png') }}" alt="appartment-bike-handlebar"></a>
+	<a href="{{ asset('assets/image/velo04.png') }}"><img class="bikeImage" src="{{ asset('assets/image/velo04.png') }}" alt="appartment-bike-face"></a>
 
 	<h2>Note générale des utilisateurs</h2>
+
 	<div>
-		<span class="fa fa-star checked"></span>
-		<span class="fa fa-star checked"></span>
-		<span class="fa fa-star checked"></span>
-		<span class="fa fa-star"></span>
-		<span class="fa fa-star"></span>
+		{% if reviews is empty %}
+		<p>Cet article n'a pas encore reçu de notes</p>
+		{% else %}
+		{% set sum = 0 %}
+		{% for review in reviews %}
+			{% set sum = sum + review.rating %}
+		{% endfor %}
+		{% set average = sum/reviews|length %}
+			{% for i in 1..5 %}
+				{% set starAverage = (average >= i ? "fa fa-star checked" : "fa fa-star")  %}
+				<span class="{{ starAverage }}"></span>
+			{% endfor %}
+			<p>{{ reviews|length }} avis utilisateur(s) - Note : {{ average }}</p>
+		{% endif %}
 	</div>
 
 	<div class="usersReview">
 		<h2>Liste des avis</h2>
 
-		<label for="review-sort">Trier par :</label>
+		{% if reviews is empty %}
+			<p>Il n'y a pas encore d'avis sur ce produit, soyez le premier à laisser un avis !</p>
+		{% else %}
+			<label for="review-sort">Trier par :</label>
 		<select name="review" id="review-sort">
 			<option value="">-- Veuillez choisir une option --</option>
 			<option value="date">Date - plus récent</option>
 			<option value="rating">Note - plus haute au plus bas</option>
-		</select>
+		</select>		
+		{% endif %}
 
         <a class ="reviewButton" href="{{ path('review') }}">
 			<button type="button" class="btn btn-outline-info">Laissez votre avis sur le produit !</button>
 		</a>
 
-		{# {{ dump(reviews) }} #}
+		{{ dump(reviews) }}
+
 		{% for review in reviews %}
 			<div class="blockReviews">
 				{% if review.image is null %}
@@ -53,11 +68,10 @@
 				<p class ="rating">Note :</p>
 
                 <div class="stars">
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star"></span>
-                    <span class="fa fa-star"></span>
+					{% for i in 1..5 %}
+						{% set starClass = (review.rating >= i ? "fa fa-star checked" : "fa fa-star")  %}
+                    	<span class="{{ starClass }}"></span>
+					{% endfor %}
                 </div>
 
 				<p class ="date"><span class="rating">Posté le : </span>
@@ -66,11 +80,7 @@
 					{{review.createdAt|date('H:i')}}
                 </p>
 
-                {% if review.comment|length > 100 %}
-                    <p class="commentary">{{ review.comment|slice(1,50) }} <span id="dots">...</span><span id="more">{{ review.comment|slice(51, 1000) }}</span>&nbsp;<a class="text-info" onclick="readMoreOrLess()" id="myBtn">Voir plus</a></p>
-                {% else %}
-                    <p class="commentary">{{ review.comment }}</p>
-                {% endif %}
+                <p class="commentary">{{ review.comment|purify }}</p>
 			</div>
 		{% endfor %}
 

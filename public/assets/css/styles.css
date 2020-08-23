@@ -8,9 +8,14 @@ body {
     text-align: center;
 }
 
-img {
+.bikeImage {
     width: 12%;
+    margin: 1rem;
     background-color: none;
+}
+
+.bikeImage:hover {
+    transform: scale(1.5);
 }
 
 .avatars {
@@ -24,7 +29,6 @@ h1, h2 {
 }
 
 .commentary {
-    word-break: break-all;
     margin: 0 2rem 2rem 1rem;
 }
 
@@ -32,6 +36,18 @@ h1, h2 {
     border: 2px solid #112b49;
     border-radius: 3rem;
     margin: 2rem 0;
+    padding: 0 1rem;
+    word-break: break-all;
+}
+
+ol, ul {
+    display: inline-block;
+    margin: auto;
+}
+
+table {
+    display: table;
+    margin: auto;
 }
 
 .username {

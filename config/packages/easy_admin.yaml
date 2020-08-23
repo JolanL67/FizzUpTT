@@ -1,0 +1,11 @@
+easy_admin:
+    entities:
+        Review:
+            form:
+              fields:
+                - { property: 'comment', type: 'FOS\CKEditorBundle\Form\Type\CKEditorType', type_options: { config: {toolbar: 'full'}} }
+    design:
+        form_theme:
+            - '@EasyAdmin/form/bootstrap_4.html.twig'
+            - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
+
