@@ -12,6 +12,10 @@
     	<a href="{{ asset('assets/image/velo0' ~ i ~ '.png') }}"><img class="bikeImage" src="{{ asset('assets/image/velo0' ~ i ~ '.png') }}" alt="velo-appartement"></a>
 	{% endfor %}
 
+	<h2>Description</h2>
+
+	<p>Ce vélo d’appartement pliant comprend 8 niveaux de résistance pour se muscler efficacement. Il est équipé d’une console avec un écran LCD qui affiche le temps, la vitesse, les calories, la distance ainsi que le pouls durant la séance. Son guidon possède des capteurs de pulsations de la main qui indiquent le pouls en temps réel. La selle est réglable en hauteur et sa fonction de pliage le rend très facile à ranger pour un gain de place optimal. Les personnes ayant utilisé ce vélo le trouvent silencieux, facile à monter et très résistant.</p>
+
 	<h2>Note générale des utilisateurs</h2>
 
 	<div>
@@ -27,7 +31,7 @@
 				{% set starAverage = (average >= i ? "fa fa-star checked" : "fa fa-star")  %}
 				<span class="{{ starAverage }}"></span>
 			{% endfor %}
-			<p>{{ reviews|length }} avis utilisateur(s) - Note : {{ average|slice(0,4) }}</p>
+			<p>{{ reviews|length }} avis utilisateur(s) - Note générale : {{ average|slice(0,4) }}</p>
 		{% endif %}
 	</div>
 
@@ -37,25 +41,33 @@
 		{% if reviews is empty %}
 			<p>Il n'y a pas encore d'avis sur ce produit, soyez le premier à laisser un avis !</p>
 		{% else %}
-			<label for="review-sort">Trier par :</label>
-		<select name="review" id="review-sort">
-			<option value="">-- Veuillez choisir une option --</option>
-			<option value="date">Date - plus récent</option>
-			<option value="rating">Note - plus haute au plus bas</option>
-		</select>		
+
+			<div class="dropdown-genre">
+				<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					{% if name is not null %}
+					 	{{ name }}
+					{% else %}
+						-- Trier par --
+					{% endif %}
+				</button>
+				<div class="dropdown-menu genre-menu" aria-labelledby="dropdownMenuButton">
+					<a class="dropdown-item" href="{{ path('home', {'date1': 'desc' }) }}">Date - plus récent</a>
+					<a class="dropdown-item" href="{{ path('home', {'date2': 'asc' }) }}">Date - plus ancien</a>
+					<a class="dropdown-item" href="{{ path('home', {'rating1': 'desc' }) }}">Note - plus haute au plus bas</a>
+					<a class="dropdown-item" href="{{ path('home', {'rating2': 'asc' }) }}">Note - plus basse au plus haut</a>
+				</div>
+			</div>	
 		{% endif %}
 
         <a class ="reviewButton" href="{{ path('review') }}">
 			<button type="button" class="btn btn-outline-info">Laissez votre avis sur le produit !</button>
 		</a>
 
-		{{ dump(reviews) }}
+		{# {{ dump(reviews) }} #}
 		{% for review in reviews %}
 			<div class="blockReviews">
-				{% if review.image is null %}
+				{% if review.images is not defined %}
 					<img class="avatars" src="{{ asset('assets/image/avatar.png') }}" alt="user-avatar">
-				{% else %}
-					<img class="avatars" src="{{ asset('assets/avatar/' ~ review.image) }}" alt="user-avatar">
 				{% endif %}
 				<p class="username">{{review.username}}</p>
 
@@ -66,6 +78,7 @@
 						{% set starClass = (review.rating >= i ? "fa fa-star checked" : "fa fa-star")  %}
                     	<span class="{{ starClass }}"></span>
 					{% endfor %}
+				<p class="userRate">{{ review.rating }} / 5</p>
                 </div>
 
 				<p class ="date"><span class="rating">Posté le : </span>
@@ -75,8 +88,15 @@
                 </p>
 
                 <p class="commentary">{{ review.comment|purify }}</p>
+
+				<div class="usersPhotos">
+					{% for image in review.imageReviews %}
+						<a href="{{ asset('assets/uploads/' ~ image.name) }}">
+							<img class="uploadsImage" src="{{ asset('assets/uploads/' ~ image.name) }}" alt="photos-utilisateur">
+						</a>
+					{% endfor %}
+				</div>
 			</div>
 		{% endfor %}
-
 	</div>
 {% endblock %}

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ReviewRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -43,9 +45,14 @@ class Review
     private $createdAt;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\OneToMany(targetEntity=ImageReviews::class, mappedBy="images", cascade={"persist"})
      */
-    private $image;
+    private $imageReviews;
+
+    public function __construct()
+    {
+        $this->imageReviews = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -112,14 +119,33 @@ class Review
         return $this;
     }
 
-    public function getImage(): ?string
+    /**
+     * @return Collection|ImageReviews[]
+     */
+    public function getImageReviews(): Collection
     {
-        return $this->image;
+        return $this->imageReviews;
     }
 
-    public function setImage(?string $image): self
+    public function addImageReview(ImageReviews $imageReview): self
     {
-        $this->image = $image;
+        if (!$this->imageReviews->contains($imageReview)) {
+            $this->imageReviews[] = $imageReview;
+            $imageReview->setImages($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImageReview(ImageReviews $imageReview): self
+    {
+        if ($this->imageReviews->contains($imageReview)) {
+            $this->imageReviews->removeElement($imageReview);
+            // set the owning side to null (unless already changed)
+            if ($imageReview->getImages() === $this) {
+                $imageReview->setImages(null);
+            }
+        }
 
         return $this;
     }

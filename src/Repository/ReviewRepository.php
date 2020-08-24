@@ -19,6 +19,46 @@ class ReviewRepository extends ServiceEntityRepository
         parent::__construct($registry, Review::class);
     }
 
+    public function orderByRatingDESC()
+    {
+        $qb = $this->createQueryBuilder('r');
+
+        $qb
+            ->orderBy('r.rating', 'DESC');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function orderByRatingASC()
+    {
+        $qb = $this->createQueryBuilder('r');
+
+        $qb
+            ->orderBy('r.rating', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function orderByDateDESC()
+    {
+        $qb = $this->createQueryBuilder('r');
+
+        $qb
+            ->orderBy('r.createdAt', 'DESC');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function orderByDateASC()
+    {
+        $qb = $this->createQueryBuilder('r');
+
+        $qb
+            ->orderBy('r.createdAt', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Review[] Returns an array of Review objects
     //  */

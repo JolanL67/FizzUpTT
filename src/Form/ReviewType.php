@@ -23,6 +23,7 @@ class ReviewType extends AbstractType
         $builder
             ->add('email', EmailType::class, [
                 'help' => 'Votre adresse e-mail doit contenir un "@" et un ".".',
+                'attr' => ['placeholder' => 'Votre e-mail...'], 
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Ce champ ne peut pas être vide',
@@ -34,6 +35,7 @@ class ReviewType extends AbstractType
             ])
             ->add('username', TextType::class, [
                 'help' => 'Votre pseudonyme doit être entre 3 et 15 caractères.',
+                'attr' => ['placeholder' => 'Votre pseudo...'], 
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Ce champ ne peut pas être vide',
@@ -48,6 +50,7 @@ class ReviewType extends AbstractType
             ])
             ->add('rating', ChoiceType::class, [
                 'help' => 'La note va de 1 étoile à 5 étoiles selon votre appréciation du produit.',
+                'attr' => ['class' => 'tinybox'],
                 'choices' => [
                     1 => true,
                     2,
@@ -70,17 +73,13 @@ class ReviewType extends AbstractType
                     ])
                 ]
             ])
-            ->add('image', FileType::class, [
-                'constraints' => [
-                    new File([
-                        'mimeTypes' => [
-                            'image/jpg',
-                            'image/jpeg',
-                            'image/png',
-                        ],
-                    ])
-                ],
+            ->add('imageReviews', FileType::class, [
+                'help' => 'Vous pouvez charger une ou plusieurs photos.',
                 'required' => false,
+                'multiple' => true,
+                'mapped' => false,
+                'label' => false,
+                'attr' => ['placeholder' => 'Sélectionnez votre ou vos fichiers'],   
             ])
         ;
     }

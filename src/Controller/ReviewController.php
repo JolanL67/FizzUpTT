@@ -2,28 +2,45 @@
 
 namespace App\Controller;
 
+use App\Entity\ImageReviews;
 use App\Entity\Review;
 use App\Form\ReviewType;
 use App\Repository\ReviewRepository;
-use DateTime;
-use DateTimeZone;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\Validator\Constraints\DateTime as ConstraintsDateTime;
 
 class ReviewController extends AbstractController
 {
     /**
-     * @Route("/", name="home")
+     * @Route("/", name="home", methods={"GET"})
      */
     public function home(ReviewRepository $reviewRepository)
     {
-        $reviews = $reviewRepository->findAll();
+        if (isset($_GET['date1'])) {
+            $reviews = $reviewRepository->orderByDateDESC();
+            $name = "Date - plus récent";
+        }
+        elseif (isset($_GET['date2'])) {
+            $reviews = $reviewRepository->orderByDateASC();
+            $name = "Date - plus ancien";
+        }
+        elseif (isset($_GET['rating1'])) {
+            $reviews = $reviewRepository->orderByRatingDESC();
+            $name = "Note - plus haute au plus bas";
+        }
+        elseif (isset($_GET['rating2'])) {
+            $reviews = $reviewRepository->orderByRatingASC();
+            $name = "Note - plus basse au plus haut";
+        }
+        else {
+            $reviews = $reviewRepository->findAll();
+        }
 
         return $this->render('home/index.html.twig', [
-            'reviews' => $reviews
+            'reviews' => $reviews,
+            'name' => $name ?? null,
         ]);
     }
 
@@ -37,6 +54,7 @@ class ReviewController extends AbstractController
         $form = $this->createForm(ReviewType::class, $review);
 
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             $review = $form->getData();
@@ -44,21 +62,27 @@ class ReviewController extends AbstractController
             //! Gérer en GMT +2
             $review->setCreatedAt(new \DateTime());
 
-            $uploadedImage = $form['image']->getData();
+            $uploadedImages = $form['imageReviews']->getData();
 
-            if ($uploadedImage) {
-                $originalFilename = pathinfo($uploadedImage->getClientOriginalName(), PATHINFO_FILENAME);
+            if ($uploadedImages) {
 
-                $safeFilename = $slugger->slug($originalFilename);
+                foreach ($uploadedImages as $image) {
 
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$uploadedImage->guessExtension();
-
-                $uploadedImage->move(
-                    $this->getParameter('avatar_directory'),
-                    $newFilename
-                );
-
-                $review->setImage($newFilename);
+                    $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+    
+                    $safeFilename = $slugger->slug($originalFilename);
+    
+                    $newFilename = $safeFilename.'-'.uniqid().'.'.$image->guessExtension();
+    
+                    $image->move(
+                        $this->getParameter('images_directory'),
+                        $newFilename
+                    );
+                    
+                    $img = new ImageReviews();
+                    $img->setName($newFilename);
+                    $review->addImageReview($img);
+                }
             }
 
             $this->addFlash('success', 'Votre avis a bien été pris en compte.');
