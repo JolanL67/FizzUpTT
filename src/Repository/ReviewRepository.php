@@ -59,6 +59,17 @@ class ReviewRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function filterByRating($rating)
+    {
+        $qb = $this->createQueryBuilder('r');
+
+        $qb
+            ->where('r.rating = :rating')
+            ->setParameter('rating', $rating);
+
+        return $qb->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Review[] Returns an array of Review objects
     //  */

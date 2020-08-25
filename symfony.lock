@@ -137,6 +137,9 @@
             "./config/routes/fm_elfinder.yaml"
         ]
     },
+    "kartik-v/bootstrap-fileinput": {
+        "version": "5.1.x-dev"
+    },
     "laminas/laminas-code": {
         "version": "3.4.1"
     },

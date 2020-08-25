@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ImageReviewsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ImageReviewsRepository::class)
@@ -14,11 +15,13 @@ class ImageReviews
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"filter_rating"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"filter_rating"})
      */
     private $name;
 

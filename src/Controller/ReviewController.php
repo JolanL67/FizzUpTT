@@ -9,16 +9,25 @@ use App\Repository\ReviewRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ReviewController extends AbstractController
 {
     /**
      * @Route("/", name="home", methods={"GET"})
+     * @Route("/{id}", name="home_filter", methods={"GET"})
      */
-    public function home(ReviewRepository $reviewRepository)
+    public function home(ReviewRepository $reviewRepository, $id = '', NormalizerInterface $normalize)
     {
-        if (isset($_GET['date1'])) {
+        $filteredRatings = $reviewRepository->filterByRating($id);
+        
+        $filteredArray = $normalize->normalize($filteredRatings, null, ['groups' => ['filter_rating']]);
+
+        if (!empty($filteredArray)) {
+            $reviews = $filteredArray;
+        }
+        elseif (isset($_GET['date1'])) {
             $reviews = $reviewRepository->orderByDateDESC();
             $name = "Date - plus récent";
         }
@@ -40,6 +49,7 @@ class ReviewController extends AbstractController
 
         return $this->render('home/index.html.twig', [
             'reviews' => $reviews,
+            'filteredArray' => $filteredArray,
             'name' => $name ?? null,
         ]);
     }

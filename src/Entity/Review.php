@@ -6,6 +6,7 @@ use App\Repository\ReviewRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ReviewRepository::class)
@@ -16,36 +17,43 @@ class Review
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"filter_rating"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"filter_rating"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"filter_rating"})
      */
     private $username;
 
     /**
      * @ORM\Column(type="smallint")
+     * @Groups({"filter_rating"})
      */
     private $rating;
 
     /**
      * @ORM\Column(type="string", length=1000)
+     * @Groups({"filter_rating"})
      */
     private $comment;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"filter_rating"})
      */
     private $createdAt;
 
     /**
      * @ORM\OneToMany(targetEntity=ImageReviews::class, mappedBy="images", cascade={"persist"})
+     * @Groups({"filter_rating"})
      */
     private $imageReviews;
 

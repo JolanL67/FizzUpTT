@@ -35,7 +35,7 @@ class ReviewType extends AbstractType
             ])
             ->add('username', TextType::class, [
                 'help' => 'Votre pseudonyme doit être entre 3 et 15 caractères.',
-                'attr' => ['placeholder' => 'Votre pseudo...'], 
+                'attr' => ['placeholder' => 'Votre pseudonyme...'], 
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Ce champ ne peut pas être vide',
@@ -79,7 +79,7 @@ class ReviewType extends AbstractType
                 'multiple' => true,
                 'mapped' => false,
                 'label' => false,
-                'attr' => ['placeholder' => 'Sélectionnez votre ou vos fichiers'],   
+                'attr' => ['placeholder' => 'Veuillez sélectionner votre ou vos fichier(s) - (optionnel)'], 
             ])
         ;
     }

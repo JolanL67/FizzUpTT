@@ -50,6 +50,11 @@ table {
     margin: auto;
 }
 
+.dropdowns {
+    display: flex;
+    justify-content: space-evenly;
+}
+
 .username {
     font-weight: bold;
 }

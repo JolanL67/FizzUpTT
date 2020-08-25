@@ -1,25 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} - Laissez un avis pour Vélo d'appartement BODY B8896{% endblock %}
+{% block title %}
+	{{ parent() }}
+	- Laissez un avis pour Vélo d'appartement BODY B8896
+{% endblock %}
 
-{% block stylesheets %} {{ parent() }} {% endblock %}
+{% block stylesheets %}
+	{{ parent() }}
+{% endblock %}
 
 {% block body %}
 
-<h1>Vous pouvez laisser votre avis par le biais de ce formulaire</h1>
+	<h1>Vous pouvez laisser votre avis par le biais de ce formulaire</h1>
 
-{{ form_start(form, {'method': 'POST'}) }}
-{{ form_errors(form) }}
+	{{ form_start(form, {'method': 'POST'}) }}
+	{{ form_errors(form) }}
 
-{{ form_row(form.email, {'label': 'E-mail'}) }}
-{{ form_row(form.username, {'label': 'Pseudonyme'}) }}
-{{ form_row(form.rating, {'label': 'Note'}) }}
-{{ form_row(form.comment, {'label': 'Commentaire'}) }}
-{{ form_row(form.imageReviews, {'label': 'Photos'}) }}
+	{{ form_row(form.email, {'label': 'E-mail'}) }}
+	{{ form_row(form.username, {'label': 'Pseudonyme'}) }}
+	{{ form_row(form.rating, {'label': 'Note'}) }}
+	{{ form_row(form.comment, {'label': 'Commentaire'}) }}
+	{{ form_row(form.imageReviews, {'label': 'Photos'}) }}
 
-<button type="submit" class="btn btn-primary">Envoyer</button>
-<a href="{{ path('home') }}"><button type="button" class="btn btn-danger">Retour à la fiche produit</button></a>
+	<button type="submit" class="btn btn-primary">Envoyer</button>
+	<a href="{{ path('home') }}">
+		<button type="button" class="btn btn-danger">Retour à la fiche produit</button>
+	</a>
 
-{{ form_end(form) }}
+	{{ form_end(form) }}
 
 {% endblock %}
