@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{{ parent() }}
-	- Vélo d'appartement BODY B8896
+{{ parent() }}
+- Vélo d'appartement BODY B8896
 {% endblock %}
 
 {% block body %}
 	<h1>Vélo d'appartement BODY B8896</h1>
 
 	{% for i in 1..4 %}
-		<a href="{{ asset('assets/image/velo0' ~ i ~ '.png') }}"><img class="bikeImage" src="{{ asset('assets/image/velo0' ~ i ~ '.png') }}" alt="velo-appartement"></a>
+	<a href="{{ asset('assets/image/velo0' ~ i ~ '.png') }}"><img class="bikeImage" src="{{ asset('assets/image/velo0' ~ i ~ '.png') }}" alt="velo-appartement"></a>
 	{% endfor %}
 
 	<h2>Description</h2>
@@ -17,79 +17,80 @@
 	<p>Ce vélo d’appartement pliant comprend 8 niveaux de résistance pour se muscler efficacement. Il est équipé d’une console avec un écran LCD qui affiche le temps, la vitesse, les calories, la distance ainsi que le pouls durant la séance. Son guidon possède des capteurs de pulsations de la main qui indiquent le pouls en temps réel. La selle est réglable en hauteur et sa fonction de pliage le rend très facile à ranger pour un gain de place optimal. Les personnes ayant utilisé ce vélo le trouvent silencieux, facile à monter et très résistant.</p>
 
 	{% if app.request.get('_route') == 'home' %}
-		<h2>Note générale des utilisateurs</h2>
+	<h2>Note générale des utilisateurs</h2>
 
-		<div>
-			{% if (app.request.get('_route') == 'home_filter') or (reviews is empty) %}
-				<p>Cet article n'a pas encore reçu de notes</p>
-			{% else %}
-				{% set sum = 0 %}
-				{% for review in reviews %}
-					{% set sum = sum + review.rating %}
-				{% endfor %}
-				{% set average = sum/reviews|length %}
-				{% for i in 1..5 %}
-					{% set starAverage = (average >= i ? "fa fa-star checked" : "fa fa-star")  %}
-					<span class="{{ starAverage }}"></span>
-				{% endfor %}
-				<p>{{ reviews|length }}
-					avis utilisateur(s) - Note générale :
-					{{ average|slice(0,4) }}
-					/ 5</p>
-			{% endif %}
-		</div>
+	<div>
+		{% if (app.request.get('_route') == 'home_filter') or (reviews is empty) %}
+			<p>Cet article n'a pas encore reçu de notes</p>
+		{% else %}
+			{% set sum = 0 %}
+			{% for review in reviews %}
+				{% set sum = sum + review.rating %}
+			{% endfor %}
+			{% set average = sum/reviews|length %}
+			{% for i in 1..5 %}
+				{% set starAverage = (average >= i ? "fa fa-star checked" : "fa fa-star")  %}
+				<span class="{{ starAverage }}"></span>
+			{% endfor %}
+			<p>{{ reviews|length }}
+				avis utilisateur(s) - Note générale :
+				{{ average|slice(0,4) }}
+				/ 5</p>
+		{% endif %}
+	</div>
 	{% else %}
-		<a href="{{ path('home') }}">
-			<button type="button" class="btn btn-danger">Retour à la liste d'avis générale</button>
-		</a>
+	<a href="{{ path('home') }}">
+		<button type="button" class="btn btn-danger">Retour à la liste d'avis générale</button>
+	</a>
 	{% endif %}
 
+
 	<div class="usersReview">
-		<h2>Liste des avis</h2>
+	<h2>Liste des avis</h2>
 
-		{% if reviews is empty %}
-			<p>Il n'y a pas encore d'avis sur ce produit, soyez le premier à laisser un avis !</p>
-		{% else %}
+	{% if reviews is empty %}
+		<p>Il n'y a pas encore d'avis sur ce produit, soyez le premier à laisser un avis !</p>
+	{% else %}
 
-			<div class="dropdowns">
+		<div class="dropdowns">
 
-				<div class="dropdown-sort">
-					<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						{% if name is not null %}
-							{{ name }}
-						{% else %}
-							-- Trier par --
-						{% endif %}
-					</button>
-					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<a class="dropdown-item" href="{{ path('home', {'date1': 'desc' }) }}">Date - plus récent</a>
-						<a class="dropdown-item" href="{{ path('home', {'date2': 'asc' }) }}">Date - plus ancien</a>
-						<a class="dropdown-item" href="{{ path('home', {'rating1': 'desc' }) }}">Note - plus haute au plus bas</a>
-						<a class="dropdown-item" href="{{ path('home', {'rating2': 'asc' }) }}">Note - plus basse au plus haut</a>
-					</div>
+			<div class="dropdown-sort">
+				<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					{% if name is not null %}
+						{{ name }}
+					{% else %}
+						-- Trier par --
+					{% endif %}
+				</button>
+				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+					<a class="dropdown-item" href="{{ path('home', {'date1': 'desc' }) }}">Date - plus récent</a>
+					<a class="dropdown-item" href="{{ path('home', {'date2': 'asc' }) }}">Date - plus ancien</a>
+					<a class="dropdown-item" href="{{ path('home', {'rating1': 'desc' }) }}">Note - plus haute au plus bas</a>
+					<a class="dropdown-item" href="{{ path('home', {'rating2': 'asc' }) }}">Note - plus basse au plus haut</a>
 				</div>
-
-				<div class="dropdown-filter">
-					<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						-- Filtrer par note --
-					</button>
-					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<a class="dropdown-item" href="{{ path('home_filter', {'id': 1})}}">1 étoile</a>
-						<a class="dropdown-item" href="{{ path('home_filter', {'id': 2})}}">2 étoiles</a>
-						<a class="dropdown-item" href="{{ path('home_filter', {'id': 3})}}">3 étoiles</a>
-						<a class="dropdown-item" href="{{ path('home_filter', {'id': 4})}}">4 étoiles</a>
-						<a class="dropdown-item" href="{{ path('home_filter', {'id': 5})}}">5 étoiles</a>
-					</div>
-				</div>
-
 			</div>
-		{% endif %}
 
-		<a class="reviewButton" href="{{ path('review') }}">
-			<button type="button" class="btn btn-outline-info">Laissez votre avis sur le produit !</button>
-		</a>
+			<div class="dropdown-filter">
+				<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					-- Filtrer par note --
+				</button>
+				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+					{% for i in 1..5 %}
+						<a class="dropdown-item" href="{{ path('home_filter', {'id': i})}}">{{i}}
+							étoile(s)</a>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	{% endif %}
 
-		{% for review in reviews %}
+	<a class="reviewButton" href="{{ path('review') }}">
+		<button type="button" class="btn btn-outline-info">Laissez votre avis sur le produit !</button>
+	</a>
+
+	{% for review in reviews %}
+		{% if (app.request.get('_route') == 'home_filter') and app.request.get('id') != review.rating  %}
+		{% else %}
 			<div class="blockReviews">
 				{% if review.images is not defined %}
 					<img class="avatars" src="{{ asset('assets/image/avatar.png') }}" alt="user-avatar">
@@ -112,7 +113,7 @@
 					</span>
 					{{review.createdAt|date('d-m-Y')}}
 					à
-					{{review.createdAt|date('H:i')}}
+					{{review.createdAt|date('H:i', 'Europe/Paris')}}
 				</p>
 
 				<p class="commentary">{{ review.comment|purify }}</p>
@@ -125,6 +126,7 @@
 					{% endfor %}
 				</div>
 			</div>
-		{% endfor %}
+		{% endif %}
+	{% endfor %}
 	</div>
 {% endblock %}

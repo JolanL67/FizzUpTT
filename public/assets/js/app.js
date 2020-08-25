@@ -1,3 +1,5 @@
+// Permet d'ajouter un close button dynamique sur le flash message d'une bonne soumission d'un avis
+
 let closeBtn = document.getElementsByClassName("close");
 let i;
 

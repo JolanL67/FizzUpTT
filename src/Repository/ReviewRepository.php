@@ -19,6 +19,9 @@ class ReviewRepository extends ServiceEntityRepository
         parent::__construct($registry, Review::class);
     }
 
+    /**
+     * Cette méthode permet de classer les avis par note par ordre décroissant.
+     */
     public function orderByRatingDESC()
     {
         $qb = $this->createQueryBuilder('r');
@@ -29,6 +32,9 @@ class ReviewRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * Cette méthode permet de classer les avis par note par ordre croissant.
+     */
     public function orderByRatingASC()
     {
         $qb = $this->createQueryBuilder('r');
@@ -39,6 +45,9 @@ class ReviewRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * Cette méthode permet de classer les avis par date par ordre décroissant.
+     */
     public function orderByDateDESC()
     {
         $qb = $this->createQueryBuilder('r');
@@ -49,6 +58,9 @@ class ReviewRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * Cette méthode permet de classer les avis par date par ordre croissant.
+     */
     public function orderByDateASC()
     {
         $qb = $this->createQueryBuilder('r');
@@ -59,6 +71,9 @@ class ReviewRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * Cette méthode permet de faire un filtre pour lister les avis selon leur note.
+     */
     public function filterByRating($rating)
     {
         $qb = $this->createQueryBuilder('r');
